@@ -1,0 +1,1533 @@
+@use "sass:color";
+
+// ============================================================
+// Sakai / PrimeVue Lara-Indigo inspired design tokens
+// ============================================================
+$primary: #00c793; // Indigo 500
+$primary-hover: #32daa2; // Indigo 600
+$primary-light: #eef2ff; // Indigo 50
+
+$success: #22c55e;
+$success-bg: #f0fdf4;
+$info: #3b82f6;
+$info-bg: #eff6ff;
+$warn: #f59e0b;
+$warn-bg: #fffbeb;
+$danger: #ef4444;
+$danger-hover: #dc2626;
+$danger-bg: #fef2f2;
+$help: #a855f7;
+$help-bg: #faf5ff;
+
+// Surfaces
+$surface-ground: #eff3f8;
+$surface-section: #ffffff;
+$surface-card: #ffffff;
+$surface-hover: #f6f9fc;
+$surface-border: #dfe7ef;
+$surface-overlay: #ffffff;
+
+// Text
+$text-color: #495057;
+$text-color-secondary: #d3d3d3;
+$text-heading: #343a40;
+
+// Base
+$radius: 6px;
+$radius-lg: 12px;
+$radius-xl: 2rem;
+$shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+$shadow:
+  0 3px 5px rgba(0, 0, 0, 0.02),
+  0 0 2px rgba(0, 0, 0, 0.05),
+  0 1px 4px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+$transition: all 0.2s ease;
+
+// ============================================================
+// Reset & Base
+// ============================================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(
+    --font-family,
+    "Inter",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif
+  );
+  background: $surface-ground;
+  color: $text-color;
+  line-height: 1.6;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $text-heading;
+  line-height: 1.3;
+}
+h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $text-heading;
+}
+
+// ============================================================
+// Layout
+// ============================================================
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem 1.5rem;
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+
+  &--full {
+    max-width: 100%;
+    padding: 0;
+  }
+}
+
+.text-muted {
+  color: $text-color-secondary;
+  font-size: 0.875rem;
+}
+.optional {
+  color: $text-color-secondary;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+// ============================================================
+// Navbar  (Sakai topbar style)
+// ============================================================
+.navbar {
+  background: $surface-card;
+  color: $text-color;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 64px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid $surface-border;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &__brand a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: $primary;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+  }
+  .navbar-logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  &__links {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: $text-heading;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: $radius;
+      transition: $transition;
+
+      &:hover {
+        background: $primary-light;
+      }
+      &.router-link-active {
+        background: $primary-light;
+        color: $primary;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__name {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-color;
+  }
+
+  // Hamburger button – hidden on desktop
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: $radius;
+    margin-left: auto;
+
+    span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: $text-heading;
+      border-radius: 2px;
+      transition: $transition;
+      transform-origin: center;
+    }
+
+    &--open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    &--open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    &--open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+
+  // Mobile user section inside drawer – hidden on desktop
+  &__mobile-user {
+    display: none;
+  }
+
+  // Backdrop
+  &__backdrop {
+    display: none;
+  }
+}
+
+// ============================================================
+// Buttons  (Sakai PrimeVue style)
+// ============================================================
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.625rem 1.25rem;
+  border-radius: $radius;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  transition: $transition;
+  white-space: nowrap;
+  text-decoration: none;
+  user-select: none;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem color.change($primary, $alpha: 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  // Primary — indigo filled
+  &--primary {
+    background: $primary;
+    border-color: $primary;
+    color: #fff;
+    &:hover:not(:disabled) {
+      background: $primary-hover;
+      border-color: $primary-hover;
+    }
+    &:focus-visible {
+      box-shadow: 0 0 0 0.2rem color.change($primary, $alpha: 0.4);
+    }
+  }
+
+  // Outline — border only
+  &--outline {
+    background: transparent;
+    border-color: $surface-border;
+    color: $text-color;
+    &:hover:not(:disabled) {
+      background: $surface-hover;
+      border-color: color.adjust($surface-border, $lightness: -8%);
+    }
+  }
+
+  // Outline-light — for use on dark/colored backgrounds
+  &--outline-light {
+    background: transparent;
+    border: 1px solid rgba($text-color, 0.4);
+    color: $text-color;
+    font-size: 0.82rem;
+    padding: 0.45rem 1rem;
+    &:hover:not(:disabled) {
+      background: $primary-light;
+      border: 1px solid rgba($danger, 0.4);
+    }
+  }
+
+  // Danger — red filled
+  &--danger {
+    background: $surface-section;
+    border-color: $danger;
+    color: $text-color;
+    &:hover:not(:disabled) {
+      background: $danger-hover;
+      border-color: $danger-hover;
+      color: #fff;
+    }
+    &:focus-visible {
+      box-shadow: 0 0 0 0.2rem color.change($danger, $alpha: 0.35);
+    }
+  }
+
+  // Success (for send)
+  &--success {
+    background: $success;
+    border-color: $success;
+    color: #fff;
+    &:hover:not(:disabled) {
+      background: color.adjust($success, $lightness: -5%);
+    }
+  }
+
+  // Sizes
+  &--sm {
+    padding: 0.4rem 0.875rem;
+    font-size: 0.8rem;
+  }
+  &--lg {
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+  }
+  &--full {
+    width: 100%;
+  }
+}
+
+// ============================================================
+// Forms  (Sakai field / inputtext style)
+// ============================================================
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-heading;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 0.625rem 0.75rem;
+    border: 1px solid $surface-border;
+    border-radius: $radius;
+    font-size: 0.875rem;
+    background: $surface-card;
+    color: $text-color;
+    transition: $transition;
+    width: 100%;
+
+    &::placeholder {
+      color: $text-color-secondary;
+    }
+
+    &:hover:not(:focus) {
+      border-color: color.adjust($surface-border, $lightness: -12%);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 0.2rem color.change($primary, $alpha: 0.2);
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.input-sm {
+  padding: 0.4rem 0.625rem;
+  border: 1px solid $surface-border;
+  border-radius: $radius;
+  font-size: 0.8rem;
+  background: $surface-card;
+  color: $text-color;
+  width: 100%;
+  transition: $transition;
+
+  &::placeholder {
+    color: $text-color-secondary;
+  }
+
+  &:hover:not(:focus) {
+    border-color: color.adjust($surface-border, $lightness: -12%);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 0.15rem color.change($primary, $alpha: 0.2);
+  }
+
+  &--summary {
+    background: $surface-ground;
+    font-weight: 600;
+    color: $text-color;
+    cursor: default;
+
+    &:hover:not(:focus) {
+      border-color: $surface-border;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $surface-border;
+      box-shadow: none;
+    }
+  }
+}
+
+.report-table__summary td {
+  background: $surface-ground;
+  border-top: 2px solid $surface-border;
+}
+
+.row-actions {
+  width: 52px;
+  text-align: center;
+  white-space: nowrap;
+  padding: 0.25rem 0.3rem !important;
+  vertical-align: middle;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: $transition;
+  line-height: 1;
+
+  &--add {
+    background: color.change($success, $alpha: 0.15);
+    color: $success;
+
+    &:hover {
+      background: $success;
+      color: #fff;
+    }
+  }
+
+  &--remove {
+    background: color.change($danger, $alpha: 0.12);
+    color: $danger;
+
+    &:hover {
+      background: $danger;
+      color: #fff;
+    }
+  }
+}
+
+// ============================================================
+// Auth pages
+// ============================================================
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $surface-ground;
+  padding: 1.5rem;
+}
+
+.auth-card {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: $shadow-lg;
+  border: 1px solid $surface-border;
+
+  &__logo {
+    display: flex;
+    justify-content: center;
+    color: $primary;
+    margin-bottom: 6px;
+  }
+  .auth-logo {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+  }
+  &__title {
+    text-align: center;
+    font-size: 1.35rem;
+    margin-bottom: 4px;
+  }
+  &__subtitle {
+    text-align: center;
+    color: $text-color-secondary;
+    margin-bottom: 1.75rem;
+    font-size: 0.875rem;
+  }
+  &__footer {
+    text-align: center;
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    color: $text-color-secondary;
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  .form-group:last-of-type {
+    margin-bottom: 1.25rem;
+  }
+}
+
+// ============================================================
+// Dashboard stats bar
+// ============================================================
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
+
+  &.project-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-card {
+  background: $surface-card;
+  border: 1px solid $surface-border;
+  border-radius: $radius-lg;
+  padding: 1rem 1.25rem;
+  box-shadow: $shadow-sm;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $text-color-secondary;
+  }
+
+  &__value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $text-heading;
+    line-height: 1.2;
+  }
+}
+
+// Clickable report card
+.report-card--clickable {
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+  }
+}
+
+// ============================================================
+// Report View page (read-only)
+// ============================================================
+.report-view {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 1.75rem;
+  box-shadow: $shadow;
+  border: 1px solid $surface-border;
+
+  &__header {
+    margin-bottom: 1.5rem;
+    h1 {
+      font-size: 1.25rem;
+      text-align: center;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  &__project-link {
+    margin-left: auto;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: $primary;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+}
+
+// ============================================================
+// Dashboard
+// ============================================================
+.dashboard {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.75rem;
+    gap: 1rem;
+    h1 {
+      margin-bottom: 3px;
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $text-heading;
+  }
+}
+
+.empty-state--inline {
+  padding: 1rem 0;
+  text-align: left;
+}
+
+// Projects grid
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-card {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 1.1rem 1.25rem;
+  box-shadow: $shadow;
+  border: 1px solid $surface-border;
+  border-left: 4px solid $primary;
+  transition:
+    box-shadow 0.2s,
+    transform 0.18s;
+
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary;
+      outline-offset: 2px;
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  &__name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: $text-heading;
+    line-height: 1.3;
+  }
+
+  &__detail {
+    font-size: 0.82rem;
+    color: $text-color;
+    margin-bottom: 2px;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid $surface-border;
+  }
+}
+
+// Project meta card (ProjectView header info)
+.project-meta-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  background: $surface-card;
+  border: 1px solid $surface-border;
+  border-radius: $radius-lg;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.75rem;
+  box-shadow: $shadow-sm;
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: $text-color;
+  }
+}
+
+// ============================================================
+// Project create / edit page
+// ============================================================
+.project-edit {
+  &__header {
+    margin-bottom: 1.5rem;
+    h1 {
+      font-size: 1.25rem;
+    }
+  }
+
+  &__card {
+    background: $surface-card;
+    border-radius: $radius-lg;
+    padding: 2rem;
+    box-shadow: $shadow;
+    border: 1px solid $surface-border;
+    max-width: 640px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.625rem;
+    margin-top: 1.5rem;
+  }
+}
+
+// Modal form (ProjectFormModal – used for editing)
+.modal-box--form {
+  max-width: 520px;
+  width: 100%;
+}
+
+.project-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1rem;
+  margin: 1.25rem 0 0.5rem;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &--full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: $text-heading;
+    }
+
+    input {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid $surface-border;
+      border-radius: $radius;
+      font-size: 0.875rem;
+      background: $surface-card;
+      color: $text-color;
+      transition: $transition;
+
+      &::placeholder {
+        color: $text-color-secondary;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 0.15rem color.change($primary, $alpha: 0.2);
+      }
+
+      &.input--error {
+        border-color: $danger;
+      }
+    }
+  }
+}
+
+.required {
+  color: $danger;
+}
+
+.field-error {
+  font-size: 0.8rem;
+  color: $danger;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.report-card {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 1.25rem;
+  box-shadow: $shadow;
+  border: 1px solid $surface-border;
+  transition:
+    box-shadow 0.2s,
+    transform 0.18s;
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  &__week {
+    font-weight: 700;
+    font-size: 0.975rem;
+    color: $text-heading;
+  }
+
+  &__entries,
+  &__date {
+    font-size: 0.825rem;
+    color: $text-color-secondary;
+    margin-bottom: 4px;
+  }
+
+  &__project {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $primary;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 14px;
+  }
+}
+
+// ============================================================
+// Tags / Badges  (Sakai tag / p-tag style)
+// ============================================================
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: $radius; // square-ish tag (Sakai default)
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: none;
+  line-height: 1;
+
+  &--draft {
+    background: $warn-bg;
+    color: color.adjust($warn, $lightness: -20%);
+    border: 1px solid $warn;
+  }
+  &--saved {
+    background: $info-bg;
+    border: 1px solid $success;
+  }
+  &--sent {
+    background: $success-bg;
+    color: color.adjust($success, $lightness: -20%);
+  }
+  &--system {
+    background: $primary-light;
+    color: $primary-hover;
+  }
+
+  // pill variant kept for opt-in use
+  &--pill {
+    border-radius: $radius-xl;
+  }
+}
+
+// ============================================================
+// Report Edit page
+// ============================================================
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: $text-color;
+  transition: color 0.15s;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    color: $primary;
+    text-decoration: none;
+  }
+}
+
+.report-edit {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 1.75rem;
+  box-shadow: $shadow;
+  border: 1px solid $surface-border;
+
+  &__header {
+    margin-bottom: 1.5rem;
+    h1 {
+      font-size: 1.25rem;
+      text-align: center;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    .form-group {
+      margin-bottom: 0;
+      max-width: 140px;
+
+      &:last-child {
+        max-width: 260px;
+        flex: 1;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+}
+
+// ============================================================
+// Report table  (Sakai p-datatable style)
+// ============================================================
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  border: 1px solid $surface-border;
+  border-radius: $radius;
+  overflow: hidden;
+
+  th {
+    background: $surface-hover;
+    color: $text-heading;
+    padding: 0.875rem 1rem;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid $surface-border;
+  }
+
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid $surface-border;
+    vertical-align: middle;
+    font-size: 0.85rem;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:nth-child(even) td {
+    background: color.change($surface-ground, $alpha: 0.5);
+  }
+
+  tbody tr:hover td {
+    transition: background 0.15s;
+  }
+
+  .day-label {
+    font-weight: 700;
+    width: 56px;
+    color: $text-color;
+    font-size: 0.875rem;
+    vertical-align: top;
+    padding-top: 10px;
+
+    &__name {
+      display: block;
+      font-weight: 700;
+    }
+    &__date {
+      display: block;
+      font-weight: 400;
+      font-size: 0.75rem;
+      color: $text-color-secondary;
+    }
+  }
+}
+
+// ============================================================
+// Work Codes page
+// ============================================================
+.workcodes-page {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 1.75rem;
+  box-shadow: $shadow;
+  border: 1px solid $surface-border;
+
+  &__header {
+    margin-bottom: 1.25rem;
+    p {
+      margin-top: 6px;
+    }
+  }
+}
+
+.workcodes-list {
+  border: 1px solid $surface-border;
+  border-radius: $radius;
+  overflow: hidden;
+  margin-bottom: 1.75rem;
+}
+
+.workcode-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid $surface-border;
+  min-height: 52px;
+  transition: background 0.15s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+  &:hover {
+    background: $surface-hover;
+  }
+  &:nth-child(even) {
+    background: color.change($surface-ground, $alpha: 0.45);
+  }
+  &:nth-child(even):hover {
+    background: $surface-hover;
+  }
+}
+
+.workcode-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: $primary-light;
+  color: $primary;
+  border-radius: $radius;
+  font-weight: 700;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+  border: 1px solid color.change($primary, $alpha: 0.2);
+}
+
+.workcode-desc {
+  flex: 1;
+  font-size: 0.9rem;
+  color: $text-color;
+}
+
+.workcode-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.workcode-add {
+  background: $surface-ground;
+  border-radius: $radius;
+  padding: 1.125rem 1.25rem;
+  border: 1px dashed $surface-border;
+
+  h2 {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+// ============================================================
+// Feedback messages
+// ============================================================
+.error-msg {
+  color: color.adjust($danger, $lightness: -8%);
+  font-size: 0.875rem;
+  padding: 0.625rem 0.875rem;
+  background: $danger-bg;
+  border-radius: $radius;
+  border-left: 4px solid $danger;
+  margin-bottom: 0.75rem;
+}
+
+.success-msg {
+  color: color.adjust($success, $lightness: -15%);
+  font-size: 0.875rem;
+  padding: 0.625rem 0.875rem;
+  background: $success-bg;
+  border-radius: $radius;
+  border-left: 4px solid $success;
+  margin-bottom: 0.75rem;
+}
+
+// ============================================================
+// States
+// ============================================================
+.loading {
+  text-align: center;
+  padding: 4rem 1.25rem;
+  color: $text-color-secondary;
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 1.25rem;
+  color: $text-color-secondary;
+  background: $surface-card;
+  border-radius: $radius-lg;
+  border: 1.5px dashed $surface-border;
+
+  &__icon {
+    color: color.change($primary, $alpha: 0.4);
+    margin-bottom: 0.875rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+}
+
+// ============================================================
+// Table scroll wrapper
+// ============================================================
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: $radius;
+
+  .report-table {
+    min-width: 560px;
+  }
+}
+
+// ============================================================
+// Responsive – mobile first breakpoints
+// ============================================================
+
+// Small phones (<= 480px)
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+
+  .main-content {
+    padding: 0.875rem 0.625rem;
+  }
+
+  .navbar {
+    padding: 0 0.75rem;
+    gap: 0.5rem;
+
+    // Show hamburger, hide desktop nav & user section
+    &__hamburger {
+      display: flex;
+    }
+    &__links {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: $surface-card;
+      border-bottom: 1px solid $surface-border;
+      box-shadow: $shadow-lg;
+      padding: 0.75rem 1rem 1rem;
+      gap: 2px;
+      z-index: 99;
+
+      a {
+        padding: 10px 12px;
+        font-size: 0.925rem;
+        border-radius: $radius;
+      }
+
+      &--open {
+        display: flex;
+      }
+    }
+    &__user {
+      display: none;
+    }
+    &__mobile-user {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      padding-top: 10px;
+      border-top: 1px solid $surface-border;
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    &__backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      top: 64px;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: 98;
+    }
+
+    &__name span {
+      display: none;
+    }
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  .auth-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: $radius;
+  }
+
+  .report-view {
+    padding: 1rem 0.875rem;
+
+    &__actions {
+      flex-direction: column;
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  .dashboard__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+
+    &.project-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .stat-card {
+    padding: 0.75rem 1rem;
+
+    &__label {
+      font-size: 0.7rem;
+    }
+
+    &__value {
+      font-size: 1.35rem;
+    }
+  }
+
+  .report-edit {
+    padding: 1rem 0.875rem;
+
+    &__meta {
+      flex-direction: column;
+      gap: 0;
+
+      .form-group {
+        max-width: 100%;
+      }
+    }
+
+    &__actions {
+      flex-direction: column;
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  .report-table {
+    th,
+    td {
+      padding: 0.5rem 0.5rem;
+    }
+  }
+
+  .dashboard {
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .workcode-add__row {
+    flex-direction: column;
+
+    input,
+    select {
+      width: 100%;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .workcode-item {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .workcode-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+// Tablets (481px – 768px)
+@media (min-width: 481px) and (max-width: 768px) {
+  .main-content {
+    padding: 1.25rem 1rem;
+  }
+
+  .navbar {
+    padding: 0 1rem;
+
+    &__hamburger {
+      display: flex;
+    }
+    &__links {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: $surface-card;
+      border-bottom: 1px solid $surface-border;
+      box-shadow: $shadow-lg;
+      padding: 0.75rem 1rem 1rem;
+      gap: 2px;
+      z-index: 99;
+
+      a {
+        padding: 10px 12px;
+        font-size: 0.925rem;
+      }
+
+      &--open {
+        display: flex;
+      }
+    }
+    &__user {
+      display: none;
+    }
+    &__mobile-user {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      padding-top: 10px;
+      border-top: 1px solid $surface-border;
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    &__backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      top: 64px;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: 98;
+    }
+  }
+
+  .report-edit {
+    padding: 1.375rem 1.25rem;
+
+    &__meta {
+      flex-wrap: wrap;
+    }
+
+    &__actions {
+      flex-wrap: wrap;
+    }
+  }
+
+  .reports-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .dashboard__stats {
+    &.project-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .dashboard {
+    &__header {
+      flex-wrap: wrap;
+    }
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
