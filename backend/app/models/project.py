@@ -18,4 +18,4 @@ class Project(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="projects")
-    reports = relationship("WeeklyReport", back_populates="project")
+    reports = relationship("WeeklyReport", back_populates="project", cascade="all, delete-orphan")
