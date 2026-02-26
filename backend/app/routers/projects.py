@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.project import Project
+from app.models.weekly_report import WeeklyReport
+from app.models.work_entry import WorkEntry
 from app.models.user import User
 from app.schemas.project import ProjectCreate, ProjectUpdate, ProjectOut
 from app.dependencies import get_current_user
@@ -76,5 +78,20 @@ def delete_project(
     current_user: User = Depends(get_current_user),
 ):
     project = _get_own_project(project_id, db, current_user)
+    # Explicitly delete all work entries and reports for this project
+    # so they are removed regardless of SQLite FK enforcement state.
+    report_ids = [
+        r.id
+        for r in db.query(WeeklyReport.id)
+        .filter(WeeklyReport.project_id == project_id)
+        .all()
+    ]
+    if report_ids:
+        db.query(WorkEntry).filter(WorkEntry.report_id.in_(report_ids)).delete(
+            synchronize_session=False
+        )
+        db.query(WeeklyReport).filter(WeeklyReport.id.in_(report_ids)).delete(
+            synchronize_session=False
+        )
     db.delete(project)
     db.commit()
