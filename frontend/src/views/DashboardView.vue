@@ -251,6 +251,8 @@ async function handleDeleteProject() {
   showDeleteProjectModal.value = false;
   try {
     await projectsStore.deleteProject(pendingDeleteProjectId.value);
+    // Re-fetch reports from backend — backend has deleted them, keep store in sync
+    await store.fetchReports();
   } finally {
     deletingProjectId.value = null;
     pendingDeleteProjectId.value = null;
