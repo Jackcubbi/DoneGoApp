@@ -36,6 +36,8 @@ def _get_wc_map(db: Session, user_id: int) -> dict[int, str]:
 
 @router.get("", response_model=list[ReportOut])
 def list_reports(
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -43,6 +45,8 @@ def list_reports(
         db.query(WeeklyReport)
         .filter(WeeklyReport.user_id == current_user.id)
         .order_by(WeeklyReport.year.desc(), WeeklyReport.week_number.desc())
+        .offset(skip)
+        .limit(limit)
         .all()
     )
 
@@ -140,14 +144,20 @@ def send_report(
     pdf_bytes = generate_report_pdf(report, wc_map, current_user)
     filename = f"report_week{report.week_number}_{report.year}.pdf"
     message = (
-        f"📋 Weekly Report\n"
-        f"Worker: {current_user.name} {current_user.surname}\n"
-        f"Week: {report.week_number} / {report.year}"
+        f"📋 Viikkoraportti\n"
+        f"Työntekijä: {current_user.name} {current_user.surname}\n"
+        f"Viikko: {report.week_number} / {report.year}\n"
+        f"PDF ladattavissa sovelluksesta: {filename}"
     )
-    send_whatsapp_report(pdf_bytes, filename, message)
+    try:
+        send_whatsapp_report(pdf_bytes, filename, message)
+    except ValueError as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except RuntimeError as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
     report.status = "sent"
     db.commit()
-    return {"detail": "Report sent successfully"}
+    return {"detail": "Raportti lähetetty onnistuneesti."}
 
 
 @router.delete("/{report_id}", status_code=204)
