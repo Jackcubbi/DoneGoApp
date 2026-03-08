@@ -108,9 +108,38 @@
         <button class="btn btn--outline" @click="handleDownloadPdf">
           <FileDownIcon :size="15" /> Lataa PDF
         </button>
+        <button
+          class="btn btn--primary"
+          :disabled="sending"
+          @click="sendConfirmOpen = true"
+        >
+          <LoaderIcon v-if="sending" :size="15" class="spin" />
+          <SendIcon v-else :size="15" />
+          {{
+            sending
+              ? "Lähetetään…"
+              : report.status === "sent"
+                ? "Lähetä uudelleen"
+                : "Lähetä WhatsApp"
+          }}
+        </button>
       </div>
+
+      <p v-if="sendError" class="error-msg">{{ sendError }}</p>
     </template>
   </div>
+
+  <ConfirmModal
+    v-model="sendConfirmOpen"
+    title="Lähetä raportti WhatsAppiin"
+    message="Raportti lähetetään WhatsApp-ryhmään. Haluatko jatkaa?"
+    confirm-label="Lähetä"
+    variant="info"
+    icon="send"
+    :loading="sending"
+    @confirm="handleSend"
+    @cancel="sendConfirmOpen = false"
+  />
 </template>
 
 <script setup>
@@ -122,7 +151,10 @@ import {
   MapPinIcon,
   Building2Icon,
   UserIcon,
+  SendIcon,
+  LoaderIcon,
 } from "lucide-vue-next";
+import ConfirmModal from "../components/ConfirmModal.vue";
 import { useRoute } from "vue-router";
 import { useReportsStore } from "../stores/reports";
 import { useProjectsStore } from "../stores/projects";
@@ -131,6 +163,9 @@ const route = useRoute();
 const store = useReportsStore();
 const projectsStore = useProjectsStore();
 const loading = ref(true);
+const sendConfirmOpen = ref(false);
+const sending = ref(false);
+const sendError = ref("");
 
 const DAYS = ["Ma", "Ti", "Ke", "To", "Pe", "La", "Su"];
 
@@ -210,6 +245,21 @@ function handleDownloadPdf() {
     .catch(() => {
       alert("PDF-tiedoston lataaminen epäonnistui.");
     });
+}
+
+async function handleSend() {
+  sending.value = true;
+  sendError.value = "";
+  try {
+    await store.sendReport(reportId.value);
+    sendConfirmOpen.value = false;
+  } catch (err) {
+    sendError.value =
+      err.response?.data?.detail ??
+      "Lähetys epäonnistui. Tarkista WhatsApp-asetukset.";
+  } finally {
+    sending.value = false;
+  }
 }
 
 onMounted(async () => {
