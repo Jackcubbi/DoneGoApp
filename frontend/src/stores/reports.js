@@ -31,7 +31,14 @@ export const useReportsStore = defineStore("reports", {
     },
 
     async sendReport(id) {
-      await api.post(`/reports/${id}/send`);
+      const { data } = await api.post(`/reports/${id}/send`);
+      if (this.currentReport?.id === id) {
+        this.currentReport = { ...this.currentReport, status: "sent" };
+      }
+      const idx = this.reports.findIndex((r) => r.id === id);
+      if (idx !== -1)
+        this.reports[idx] = { ...this.reports[idx], status: "sent" };
+      return data;
     },
 
     async fetchWorkCodes() {
