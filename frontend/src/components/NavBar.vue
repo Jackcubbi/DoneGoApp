@@ -16,6 +16,9 @@
       <RouterLink to="/workcodes" @click="menuOpen = false">
         <ListIcon :size="18" /> Työkoodit
       </RouterLink>
+      <RouterLink to="/stats" @click="menuOpen = false">
+        <BarChart2Icon :size="18" /> Statistiikka
+      </RouterLink>
       <!-- Mobile-only user info + logout inside the drawer -->
       <div class="navbar__mobile-user">
         <span v-if="auth.user" class="navbar__name">
@@ -76,6 +79,7 @@ import {
   LayoutDashboardIcon,
   FilePlusIcon,
   ListIcon,
+  BarChart2Icon,
   UserIcon,
   LogOutIcon,
 } from "lucide-vue-next";
