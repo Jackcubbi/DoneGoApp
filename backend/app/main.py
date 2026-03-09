@@ -5,10 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import engine, Base
 import app.models  # registers all ORM models with Base metadata
 from app.models.work_code import WorkCode
-from app.routers import auth, reports, work_codes, projects
+from app.routers import auth, reports, work_codes, projects, stats
 
 DEFAULT_WORK_CODES = [
     (1, "Jalkojen poraus"),
@@ -35,6 +36,19 @@ async def lifespan(app: FastAPI):
                 conn.commit()
             except Exception:
                 pass  # Column already exists
+        # Clean up orphaned reports:
+        # Case 1 – project was hard-deleted before cascade fix (project_id IS NOT NULL but project gone)
+        # Case 2 – SQLAlchemy SET NULL on project_id when project was deleted without cascade
+        orphan_rows = conn.execute(text("""
+            SELECT id FROM weekly_reports
+            WHERE project_id IS NULL
+               OR project_id NOT IN (SELECT id FROM projects)
+        """)).fetchall()
+        if orphan_rows:
+            ids = ",".join(str(r[0]) for r in orphan_rows)
+            conn.execute(text(f"DELETE FROM work_entries WHERE report_id IN ({ids})"))
+            conn.execute(text(f"DELETE FROM weekly_reports WHERE id IN ({ids})"))
+            conn.commit()
     with Session(engine) as db:
         for code, desc in DEFAULT_WORK_CODES:
             exists = (
@@ -52,12 +66,7 @@ app = FastAPI(title="DoneGo API", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:80",
-        "http://localhost",
-        "http://frontend",
-    ],
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -67,6 +76,7 @@ app.include_router(auth.router)
 app.include_router(reports.router)
 app.include_router(work_codes.router)
 app.include_router(projects.router)
+app.include_router(stats.router)
 
 
 @app.get("/health", tags=["health"])
