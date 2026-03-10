@@ -1,6 +1,7 @@
 services:
   backend:
     build: ./backend
+    image: donego-backend
     container_name: donego-backend
     volumes:
       - ./backend:/app
@@ -11,16 +12,27 @@ services:
       - .env
     ports:
       - "8000:8000"
+    networks:
+      - donego-app
     restart: unless-stopped
 
   frontend:
     build: ./frontend
+    image: donego-frontend
     container_name: donego-frontend
     ports:
       - "80:80"
     depends_on:
       - backend
+    networks:
+      - donego-app
     restart: unless-stopped
+
+networks:
+  donego-app:
+    name: donego-app
 
 volumes:
   db_data:
+    external: true
+    name: donegoapp_db_data
