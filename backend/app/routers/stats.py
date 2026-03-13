@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -57,16 +57,20 @@ def get_summary(
 
 @router.get("/by-week")
 def get_by_week(
+    year: int | None = Query(default=None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Hours and area totals grouped by year+week (most recent 20 weeks)."""
+    """Hours and area totals grouped by year+week, optionally filtered by year."""
+    filters = [
+        WeeklyReport.user_id == current_user.id,
+        WeeklyReport.status.in_(["saved", "sent"]),
+    ]
+    if year is not None:
+        filters.append(WeeklyReport.year == year)
     reports = (
         db.query(WeeklyReport)
-        .filter(
-            WeeklyReport.user_id == current_user.id,
-            WeeklyReport.status.in_(["saved", "sent"]),
-        )
+        .filter(*filters)
         .order_by(WeeklyReport.year.asc(), WeeklyReport.week_number.asc())
         .all()
     )
@@ -90,8 +94,7 @@ def get_by_week(
         {**v, "hours": round(v["hours"], 2), "area": round(v["area"], 2)}
         for v in week_map.values()
     ]
-    # Return last 20 weeks
-    return result[-20:]
+    return result
 
 
 @router.get("/by-project")
