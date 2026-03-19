@@ -1,0 +1,44 @@
+
+// ============================================================
+// Sakai / PrimeVue Lara-Indigo inspired design tokens
+// ============================================================
+$primary: #00c793; // Indigo 500
+$primary-hover: #32daa2; // Indigo 600
+$primary-light: #eef2ff; // Indigo 50
+
+$success: #22c55e;
+$success-bg: #f0fdf4;
+$info: #3b82f6;
+$info-bg: #eff6ff;
+$warn: #f59e0b;
+$warn-bg: #fffbeb;
+$danger: #ef4444;
+$danger-hover: #dc2626;
+$danger-bg: #fef2f2;
+$help: #a855f7;
+$help-bg: #faf5ff;
+
+// Surfaces
+$surface-ground: #eff3f8;
+$surface-section: #ffffff;
+$surface-card: #ffffff;
+$surface-hover: #f6f9fc;
+$surface-border: #dfe7ef;
+$surface-overlay: #ffffff;
+
+// Text
+$text-color: #495057;
+$text-color-secondary: #d3d3d3;
+$text-heading: #343a40;
+
+// Base
+$radius: 6px;
+$radius-lg: 12px;
+$radius-xl: 2rem;
+$shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+$shadow:
+  0 3px 5px rgba(0, 0, 0, 0.02),
+  0 0 2px rgba(0, 0, 0, 0.05),
+  0 1px 4px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+$transition: all 0.2s ease;
