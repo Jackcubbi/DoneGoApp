@@ -1,0 +1,60 @@
+@use "../variables" as *;
+
+// ============================================================
+// Auth pages
+// ============================================================
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $surface-ground;
+  padding: 1.5rem;
+}
+
+.auth-card {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: $shadow-lg;
+  border: 1px solid $surface-border;
+
+  &__logo {
+    display: flex;
+    justify-content: center;
+    color: $primary;
+    margin-bottom: 6px;
+  }
+  .auth-logo {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+  }
+  &__title {
+    text-align: center;
+    font-size: 1.35rem;
+    margin-bottom: 4px;
+  }
+  &__subtitle {
+    text-align: center;
+    color: $text-color-secondary;
+    margin-bottom: 1.75rem;
+    font-size: 0.875rem;
+  }
+  &__footer {
+    text-align: center;
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    color: $text-color-secondary;
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  .form-group:last-of-type {
+    margin-bottom: 1.25rem;
+  }
+}
