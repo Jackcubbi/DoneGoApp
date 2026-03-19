@@ -1,0 +1,478 @@
+@use "sass:color";
+@use "variables" as *;
+
+// ============================================================
+// Navbar  (Sakai topbar style)
+// ============================================================
+.navbar {
+  background: $surface-card;
+  color: $text-color;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 64px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid $surface-border;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &__brand a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: $primary;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+  }
+  .navbar-logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  &__links {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: $text-heading;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: $radius;
+      transition: $transition;
+
+      &:hover {
+        background: $primary-light;
+      }
+      &.router-link-active {
+        background: $primary-light;
+        color: $primary;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__name {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-color;
+  }
+
+  // Hamburger button вЂ“ hidden on desktop
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: $radius;
+    margin-left: auto;
+
+    span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: $text-heading;
+      border-radius: 2px;
+      transition: $transition;
+      transform-origin: center;
+    }
+
+    &--open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    &--open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    &--open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+
+  // Mobile user section inside drawer вЂ“ hidden on desktop
+  &__mobile-user {
+    display: none;
+  }
+
+  // Backdrop
+  &__backdrop {
+    display: none;
+  }
+}
+
+// ============================================================
+// Buttons  (Sakai PrimeVue style)
+// ============================================================
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.625rem 1.25rem;
+  border-radius: $radius;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  transition: $transition;
+  white-space: nowrap;
+  text-decoration: none;
+  user-select: none;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem color.change($primary, $alpha: 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  // Primary вЂ” indigo filled
+  &--primary {
+    background: $primary;
+    border-color: $primary;
+    color: #fff;
+    &:hover:not(:disabled) {
+      background: $primary-hover;
+      border-color: $primary-hover;
+    }
+    &:focus-visible {
+      box-shadow: 0 0 0 0.2rem color.change($primary, $alpha: 0.4);
+    }
+  }
+
+  // Outline вЂ” border only
+  &--outline {
+    background: transparent;
+    border-color: $surface-border;
+    color: $text-color;
+    &:hover:not(:disabled) {
+      background: $surface-hover;
+      border-color: color.adjust($surface-border, $lightness: -8%);
+    }
+  }
+
+  // Outline-light вЂ” for use on dark/colored backgrounds
+  &--outline-light {
+    background: transparent;
+    border: 1px solid rgba($text-color, 0.4);
+    color: $text-color;
+    font-size: 0.82rem;
+    padding: 0.45rem 1rem;
+    &:hover:not(:disabled) {
+      background: $primary-light;
+      border: 1px solid rgba($danger, 0.4);
+    }
+  }
+
+  // Danger вЂ” red filled
+  &--danger {
+    background: $surface-section;
+    border-color: $danger;
+    color: $text-color;
+    &:hover:not(:disabled) {
+      background: $danger-hover;
+      border-color: $danger-hover;
+      color: #fff;
+    }
+    &:focus-visible {
+      box-shadow: 0 0 0 0.2rem color.change($danger, $alpha: 0.35);
+    }
+  }
+
+  // Success (for send)
+  &--success {
+    background: $success;
+    border-color: $success;
+    color: #fff;
+    &:hover:not(:disabled) {
+      background: color.adjust($success, $lightness: -5%);
+    }
+  }
+
+  // Sizes
+  &--sm {
+    padding: 0.4rem 0.875rem;
+    font-size: 0.8rem;
+  }
+  &--lg {
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+  }
+  &--full {
+    width: 100%;
+  }
+}
+
+// ============================================================
+// Forms  (Sakai field / inputtext style)
+// ============================================================
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-heading;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 0.625rem 0.75rem;
+    border: 1px solid $surface-border;
+    border-radius: $radius;
+    font-size: 0.875rem;
+    background: $surface-card;
+    color: $text-color;
+    transition: $transition;
+    width: 100%;
+
+    &::placeholder {
+      color: $text-color-secondary;
+    }
+
+    &:hover:not(:focus) {
+      border-color: color.adjust($surface-border, $lightness: -12%);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 0.2rem color.change($primary, $alpha: 0.2);
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.input-sm {
+  padding: 0.4rem 0.625rem;
+  border: 1px solid $surface-border;
+  border-radius: $radius;
+  font-size: 0.8rem;
+  background: $surface-card;
+  color: $text-color;
+  width: 100%;
+  transition: $transition;
+
+  &::placeholder {
+    color: $text-color-secondary;
+  }
+
+  &:hover:not(:focus) {
+    border-color: color.adjust($surface-border, $lightness: -12%);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 0.15rem color.change($primary, $alpha: 0.2);
+  }
+
+  &--summary {
+    background: $surface-ground;
+    font-weight: 600;
+    color: $text-color;
+    cursor: default;
+
+    &:hover:not(:focus) {
+      border-color: $surface-border;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $surface-border;
+      box-shadow: none;
+    }
+  }
+}
+
+.report-table__summary td {
+  background: $surface-ground;
+  border-top: 2px solid $surface-border;
+}
+
+.row-actions {
+  width: 52px;
+  text-align: center;
+  white-space: nowrap;
+  padding: 0.25rem 0.3rem !important;
+  vertical-align: middle;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: $transition;
+  line-height: 1;
+
+  &--add {
+    background: color.change($success, $alpha: 0.15);
+    color: $success;
+
+    &:hover {
+      background: $success;
+      color: #fff;
+    }
+  }
+
+  &--remove {
+    background: color.change($danger, $alpha: 0.12);
+    color: $danger;
+
+    &:hover {
+      background: $danger;
+      color: #fff;
+    }
+  }
+}
+
+// ============================================================
+// Tags / Badges  (Sakai tag / p-tag style)
+// ============================================================
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: $radius; // square-ish tag (Sakai default)
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: none;
+  line-height: 1;
+
+  &--draft {
+    background: $warn-bg;
+    color: color.adjust($warn, $lightness: -20%);
+    border: 1px solid $warn;
+  }
+  &--saved {
+    background: $info-bg;
+    border: 1px solid $success;
+  }
+  &--sent {
+    background: $success-bg;
+    color: color.adjust($success, $lightness: -20%);
+  }
+  &--system {
+    background: $primary-light;
+    color: $primary-hover;
+  }
+
+  // pill variant kept for opt-in use
+  &--pill {
+    border-radius: $radius-xl;
+  }
+}
+
+// ============================================================
+// Feedback messages
+// ============================================================
+.error-msg {
+  color: color.adjust($danger, $lightness: -8%);
+  font-size: 0.875rem;
+  padding: 0.625rem 0.875rem;
+  background: $danger-bg;
+  border-radius: $radius;
+  border-left: 4px solid $danger;
+  margin-bottom: 0.75rem;
+}
+
+.success-msg {
+  color: color.adjust($success, $lightness: -15%);
+  font-size: 0.875rem;
+  padding: 0.625rem 0.875rem;
+  background: $success-bg;
+  border-radius: $radius;
+  border-left: 4px solid $success;
+  margin-bottom: 0.75rem;
+}
+
+// ============================================================
+// States
+// ============================================================
+.loading {
+  text-align: center;
+  padding: 4rem 1.25rem;
+  color: $text-color-secondary;
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 1.25rem;
+  color: $text-color-secondary;
+  background: $surface-card;
+  border-radius: $radius-lg;
+  border: 1.5px dashed $surface-border;
+
+  &__icon {
+    color: color.change($primary, $alpha: 0.4);
+    margin-bottom: 0.875rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+}
+
+// ============================================================
+// Table scroll wrapper
+// ============================================================
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: $radius;
+
+  .report-table {
+    min-width: 560px;
+  }
+}
