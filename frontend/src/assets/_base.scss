@@ -1,0 +1,84 @@
+@use "variables" as *;
+
+// ============================================================
+// Reset & Base
+// ============================================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(
+    --font-family,
+    "Inter",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif
+  );
+  background: $surface-ground;
+  color: $text-color;
+  line-height: 1.6;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $text-heading;
+  line-height: 1.3;
+}
+h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $text-heading;
+}
+
+// ============================================================
+// Layout
+// ============================================================
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem 1.5rem;
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+
+  &--full {
+    max-width: 100%;
+    padding: 0;
+  }
+}
+
+.text-muted {
+  color: $text-color-secondary;
+  font-size: 0.875rem;
+}
+.optional {
+  color: $text-color-secondary;
+  font-size: 0.8rem;
+  font-style: italic;
+}
