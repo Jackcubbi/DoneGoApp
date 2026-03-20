@@ -1,0 +1,173 @@
+@use "sass:color";
+@use "../variables" as *;
+
+// ============================================================
+// Report View page (read-only)
+// ============================================================
+.report-view {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 1.75rem;
+  box-shadow: $shadow;
+  border: 1px solid $surface-border;
+
+  &__header {
+    margin-bottom: 1.5rem;
+    h1 {
+      font-size: 1.25rem;
+      text-align: center;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  &__project-link {
+    margin-left: auto;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: $primary;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+}
+
+// ============================================================
+// Report Edit page
+// ============================================================
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: $text-color;
+  transition: color 0.15s;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    color: $primary;
+    text-decoration: none;
+  }
+}
+
+.report-edit {
+  background: $surface-card;
+  border-radius: $radius-lg;
+  padding: 1.75rem;
+  box-shadow: $shadow;
+  border: 1px solid $surface-border;
+
+  &__header {
+    margin-bottom: 1.5rem;
+    h1 {
+      font-size: 1.25rem;
+      text-align: center;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    .form-group {
+      margin-bottom: 0;
+      max-width: 140px;
+
+      &:last-child {
+        max-width: 260px;
+        flex: 1;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+}
+
+// ============================================================
+// Report table  (Sakai p-datatable style)
+// ============================================================
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  border: 1px solid $surface-border;
+  border-radius: $radius;
+  overflow: hidden;
+
+  th {
+    background: $surface-hover;
+    color: $text-heading;
+    padding: 0.875rem 1rem;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid $surface-border;
+  }
+
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid $surface-border;
+    vertical-align: middle;
+    font-size: 0.85rem;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:nth-child(even) td {
+    background: color.change($surface-ground, $alpha: 0.5);
+  }
+
+  tbody tr:hover td {
+    transition: background 0.15s;
+  }
+
+  .day-label {
+    font-weight: 700;
+    width: 56px;
+    color: $text-color;
+    font-size: 0.875rem;
+    vertical-align: top;
+    padding-top: 10px;
+
+    &__name {
+      display: block;
+      font-weight: 700;
+    }
+    &__date {
+      display: block;
+      font-weight: 400;
+      font-size: 0.75rem;
+      color: $text-color-secondary;
+    }
+  }
+}
