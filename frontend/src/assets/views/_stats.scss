@@ -1,0 +1,169 @@
+@use "../variables" as *;
+
+// ============================================================
+// StatsView
+// ============================================================
+.stats-page {
+  &__header {
+    margin-bottom: 1.75rem;
+
+    h1 {
+      margin-bottom: 4px;
+    }
+  }
+}
+
+.stats-card {
+  background: $surface-card;
+  border: 1px solid $surface-border;
+  border-radius: $radius-lg;
+  padding: 1.5rem;
+  box-shadow: $shadow-sm;
+  margin-bottom: 1.25rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: $text-heading;
+    margin-bottom: 0;
+  }
+
+  &__chart {
+    height: 260px;
+
+    &--doughnut {
+      height: 280px;
+    }
+  }
+
+  &--empty {
+    p {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.stats-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  .stats-card {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stats-status-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stats-status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &__count {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $text-heading;
+  }
+}
+
+.week-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.range-sep {
+  font-size: 0.85rem;
+  color: $text-color;
+}
+
+.filter-input-week {
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border: 1px solid $surface-border;
+  border-radius: $radius;
+  background: $surface-hover;
+  color: $text-heading;
+  outline: none;
+  cursor: pointer;
+
+  &:focus {
+    border-color: $primary;
+  }
+}
+
+.filter-select {
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border: 1px solid $surface-border;
+  border-radius: $radius;
+  background: $surface-hover;
+  color: $text-heading;
+  cursor: pointer;
+  outline: none;
+
+  &:focus {
+    border-color: $primary;
+  }
+}
+
+.btn-group {
+  display: flex;
+  border: 1px solid $surface-border;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.btn--xs {
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  border: none;
+  border-right: 1px solid $surface-border;
+  background: $surface-hover;
+  color: $text-color;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &.active {
+    background: $primary;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  &:hover:not(.active) {
+    background: #e8f8f4;
+    color: $text-heading;
+  }
+}
